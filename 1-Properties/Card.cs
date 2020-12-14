@@ -1,15 +1,13 @@
 namespace Properties
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
 
     /// <summary>
     /// The class models a card.
     /// </summary>
-    public class Card
+    public class Card : IEquatable<Card>
     {
-        private readonly string seed;
-        private readonly string name;
-        private readonly int ordinal;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Card"/> class.
@@ -19,9 +17,9 @@ namespace Properties
         /// <param name="ordinal">the ordinal number of the card.</param>
         public Card(string name, string seed, int ordinal)
         {
-            this.name = name;
-            this.ordinal = ordinal;
-            this.seed = seed;
+            this.Name = name;
+            this.Ordinal = ordinal;
+            this.Seed = seed;
         }
 
         /// <summary>
@@ -34,29 +32,47 @@ namespace Properties
         }
 
         // TODO improve
-        public string GetSeed()
+        public string Seed
         {
-            return this.seed;
+            get;
         }
 
         // TODO improve
-        public string GetName()
+        public string Name
         {
-            return this.name;
+            get;
+
         }
 
         // TODO improve
-        public int GetOrdinal()
+        public int Ordinal
         {
-            return this.ordinal;
+            get;
+
+        }
+
+        public override bool Equals(object obj)
+        {
+            return Equals(obj as Card);
+        }
+
+        public bool Equals([AllowNull] Card other)
+        {
+            return other != null &&
+                   Seed == other.Seed &&
+                   Name == other.Name &&
+                   Ordinal == other.Ordinal;
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(Seed, Name, Ordinal);
         }
 
         /// <inheritdoc cref="object.ToString"/>
-        public override string ToString()
-        {
+        public override string ToString() =>
             // TODO understand string interpolation
-            return $"{this.GetType().Name}(Name={this.GetName()}, Seed={this.GetSeed()}, Ordinal={this.GetOrdinal()})";
-        }
+            $"{this.GetType().Name}(Name={Name}, Seed={Seed}, Ordinal={Ordinal})";
 
         // TODO generate Equals(object obj)
 
